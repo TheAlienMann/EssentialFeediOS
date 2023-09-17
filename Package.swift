@@ -4,20 +4,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "EssentialFeediOS",
-    products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "EssentialFeediOS",
-            targets: ["EssentialFeediOS"]),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "EssentialFeediOS"),
-        .testTarget(
-            name: "EssentialFeediOSTests",
-            dependencies: ["EssentialFeediOS"]),
-    ]
+  name: "EssentialFeediOS",
+  platforms: [.iOS(.v15)],
+  products: [
+    // Products define the executables and libraries a package produces, making them visible to other packages.
+    .library(
+      name: "EssentialFeediOS",
+      targets: ["EssentialFeediOS"]
+    ),
+  ],
+  dependencies: [
+    .package(name: "EssentialFeed", path: "/Users/mohamadrahmani/Developer/_MyProjects/EssentialFeedDemo/EssentialFeed"),
+  ],
+  targets: [
+    // Targets are the basic building blocks of a package, defining a module or a test suite.
+    // Targets can depend on other targets in this package and products from dependencies.
+    .target(
+      name: "EssentialFeediOS",
+      dependencies: ["EssentialFeed"],
+      path: "Sources"
+    ),
+    .testTarget(
+      name: "EssentialFeediOSTests",
+      dependencies: ["EssentialFeediOS"],
+      path: "Tests"
+//      resources: [.process("Resources")]
+    ),
+  ]
 )
