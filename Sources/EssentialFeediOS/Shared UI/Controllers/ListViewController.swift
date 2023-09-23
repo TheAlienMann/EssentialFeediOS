@@ -2,12 +2,12 @@ import Foundation
 import UIKit
 import EssentialFeed
 
-public final class ListViewController: UIViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
+public final class ListViewController<T: UITableViewCell>: UIViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
   private(set) public var errorView = ErrorView()
   
   public lazy var tableView: UITableView = {
     let tableView = UITableView(frame: view.frame, style: .plain)
-    tableView.register(FeedImageCell.self, forCellReuseIdentifier: FeedImageCell.identifier)
+//    tableView.register(FeedImageCell.self, forCellReuseIdentifier: FeedImageCell.identifier)
     tableView.estimatedRowHeight = 580
     tableView.sectionHeaderHeight = 28.0
     tableView.sectionFooterHeight = 28.0
@@ -28,11 +28,23 @@ public final class ListViewController: UIViewController, UITableViewDataSourcePr
   }()
   
   public var onRefresh: (() -> Void)?
+  private let cell: T
+  
+  public init(_ cell: T) {
+    self.cell = cell
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   public override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
     
+    tableView.register(cell: T.self)
+    //    tableView.register(cell.self, forCellReuseIdentifier: FeedImageCell.identifier)
     view.addSubview(tableView)
     tableView.refreshControl = refreshControl
     //    view.addSubview(refreshControl)

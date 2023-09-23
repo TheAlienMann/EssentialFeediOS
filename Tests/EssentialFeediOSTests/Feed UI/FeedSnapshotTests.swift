@@ -43,11 +43,11 @@ class FeedSnapshotTests: XCTestCase {
   
   // MARK: - Helpers
   
-  private func makeSUT() -> ListViewController {
+  private func makeSUT() -> ListViewController<FeedImageCell> {
 //    let bundle = Bundle.module
 //    let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
 //    let controller = storyboard.instantiateInitialViewController() as! EssentialFeediOS.ListViewController
-    let controller = ListViewController()
+    let controller = ListViewController(FeedImageCell())
     controller.loadViewIfNeeded()
     controller.tableView.showsVerticalScrollIndicator = false
     controller.tableView.showsHorizontalScrollIndicator = false
