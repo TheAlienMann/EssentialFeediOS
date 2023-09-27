@@ -2,24 +2,9 @@ import Foundation
 import UIKit
 import EssentialFeed
 
-public final class ListViewController<T: UITableViewCell>: UIViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
+public final class ListViewController<T: UITableViewCell>: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
   private(set) public var errorView = ErrorView()
   
-  public lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: view.frame, style: .plain)
-//    tableView.register(FeedImageCell.self, forCellReuseIdentifier: FeedImageCell.identifier)
-    tableView.estimatedRowHeight = 580
-    tableView.sectionHeaderHeight = 28.0
-    tableView.sectionFooterHeight = 28.0
-    tableView.insetsContentViewsToSafeArea = true
-    return tableView
-  }()
-  
-  private lazy var refreshControl: UIRefreshControl = {
-    let refreshCtrl = UIRefreshControl()
-    refreshCtrl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-    return refreshCtrl
-  }()
   
   private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
     .init(tableView: tableView, cellProvider: { (tableView, index, controller) in
@@ -44,22 +29,9 @@ public final class ListViewController<T: UITableViewCell>: UIViewController, UIT
     view.backgroundColor = .systemBackground
     
     tableView.register(cell: T.self)
-    //    tableView.register(cell.self, forCellReuseIdentifier: FeedImageCell.identifier)
-    view.addSubview(tableView)
-    tableView.refreshControl = refreshControl
-    //    view.addSubview(refreshControl)
-        tableView.addSubview(refreshControl)
+
     configureTableView()
     refresh()
-    NSLayoutConstraint.activate([
-      tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      tableView.topAnchor.constraint(equalTo: view.topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      
-//      refreshControl.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-//      refreshControl.centerYAnchor.constraint(equalTo: tableView.centerYAnchor),
-    ])
   }
   
   private func configureTableView() {
@@ -105,24 +77,25 @@ public final class ListViewController<T: UITableViewCell>: UIViewController, UIT
   }
   
   public func display(_ viewModel: ResourceLoadingViewModel) {
-    refreshControl.update(isRefreshing: viewModel.isLoading)
+    refreshControl?.update(isRefreshing: viewModel.isLoading)
   }
   
   public func display(_ viewModel: ResourceErrorViewModel) {
     errorView.message = viewModel.message
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    print(#line, #file.components(separatedBy: "/").last!, "tapped cell.")
     let dl = cellController(at: indexPath)?.delegate
     dl?.tableView?(tableView, didSelectRowAt: indexPath)
   }
   
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+  public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     let dl = cellController(at: indexPath)?.delegate
     dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
   }
   
-  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+  public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     let dl = cellController(at: indexPath)?.delegate
     dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
   }
