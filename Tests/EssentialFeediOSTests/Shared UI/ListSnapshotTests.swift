@@ -27,6 +27,7 @@ class ListSnapshotTests: XCTestCase {
   
   private func makeSUT() -> ListViewController<FeedImageCell> {
     let controller = ListViewController(FeedImageCell())
+    controller.tableView.register(cell: FeedImageCell.self)
     controller.loadViewIfNeeded()
     controller.tableView.separatorStyle = .none
     controller.tableView.showsVerticalScrollIndicator = false

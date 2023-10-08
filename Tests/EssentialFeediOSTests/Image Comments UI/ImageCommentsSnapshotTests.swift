@@ -18,6 +18,7 @@ class ImageCommentsSnapshotTests: XCTestCase {
   
   private func makeSUT() -> ListViewController<ImageCommentCell> {
     let controller = ListViewController(ImageCommentCell())
+    controller.tableView.register(cell: ImageCommentCell.self)
     controller.loadViewIfNeeded()
     controller.tableView.showsVerticalScrollIndicator = false
     controller.tableView.showsHorizontalScrollIndicator = false
