@@ -5,6 +5,7 @@ import EssentialFeed
 public final class ListViewController<T: UITableViewCell>: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
   private(set) public var errorView = ErrorView()
   
+  
   private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
     .init(tableView: tableView, cellProvider: { (tableView, index, controller) in
       controller.dataSource.tableView(tableView, cellForRowAt: index)
@@ -12,7 +13,6 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
   }()
   
   public var onRefresh: (() -> Void)?
-  
   private let cell: T
   
   public init(_ cell: T) {
@@ -29,7 +29,7 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
     view.backgroundColor = .systemBackground
     
     tableView.register(cell: T.self)
-    
+
     configureTableView()
     refresh()
   }
