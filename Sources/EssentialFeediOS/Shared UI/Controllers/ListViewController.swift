@@ -12,6 +12,12 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
     })
   }()
   
+  private lazy var refreshCtrl: UIRefreshControl = {
+    let refresh = UIRefreshControl()
+    refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+    return refresh
+  }()
+  
   public var onRefresh: (() -> Void)?
   private let cell: T
   
@@ -29,6 +35,7 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
     view.backgroundColor = .systemBackground
     
     tableView.register(cell: T.self)
+    tableView.refreshControl = refreshCtrl
 
     configureTableView()
     refresh()
