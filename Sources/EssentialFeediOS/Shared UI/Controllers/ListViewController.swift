@@ -36,6 +36,11 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
     
     tableView.register(cell: T.self)
     tableView.refreshControl = refreshCtrl
+    tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 414.0, height: 16.0)))
+    tableView.sectionHeaderHeight = 28
+    tableView.sectionFooterHeight = 28
+    tableView.insetsContentViewsToSafeArea = true
+    tableView.contentInset = .zero
 
     configureTableView()
     refresh()
@@ -44,6 +49,7 @@ public final class ListViewController<T: UITableViewCell>: UITableViewController
   private func configureTableView() {
     dataSource.defaultRowAnimation = .fade
     tableView.dataSource = dataSource
+    tableView.prefetchDataSource = self
     tableView.tableHeaderView = errorView.makeContainer()
     
     errorView.onHide = { [weak self] in

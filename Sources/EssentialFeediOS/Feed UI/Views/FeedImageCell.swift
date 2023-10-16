@@ -23,6 +23,7 @@ public final class FeedImageCell: UITableViewCell {
   private(set) public lazy var pinContainer: UIView = {
     let view = UIView()
 //    view.backgroundColor = .clear
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.contentMode = .scaleToFill
     view.isOpaque = true
     view.clearsContextBeforeDrawing = true
@@ -32,6 +33,7 @@ public final class FeedImageCell: UITableViewCell {
   
   private(set) public lazy var locationLabel: UILabel = {
     let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .natural
     label.numberOfLines = 2
     label.lineBreakMode = .byTruncatingTail

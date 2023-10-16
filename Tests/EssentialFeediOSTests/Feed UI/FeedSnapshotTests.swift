@@ -49,6 +49,7 @@ class FeedSnapshotTests: XCTestCase {
 //    let controller = storyboard.instantiateInitialViewController() as! EssentialFeediOS.ListViewController
     let controller = ListViewController(FeedImageCell())
     controller.loadViewIfNeeded()
+    controller.tableView.separatorStyle = .none
     controller.tableView.showsVerticalScrollIndicator = false
     controller.tableView.showsHorizontalScrollIndicator = false
     return controller
