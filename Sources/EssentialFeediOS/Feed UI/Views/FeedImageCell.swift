@@ -15,8 +15,8 @@ public final class FeedImageCell: UITableViewCell {
     stackView.addArrangedSubviews([pinContainer, locationLabel])
     stackView.clearsContextBeforeDrawing = true
     stackView.autoresizesSubviews = true
-    stackView.layer.borderColor = UIColor.black.cgColor
-    stackView.layer.borderWidth = 1.0
+//    stackView.layer.borderColor = UIColor.black.cgColor
+//    stackView.layer.borderWidth = 1.0
     return stackView
   }()
   
@@ -28,6 +28,8 @@ public final class FeedImageCell: UITableViewCell {
     view.isOpaque = true
     view.clearsContextBeforeDrawing = true
     view.autoresizesSubviews = true
+    view.addSubview(pinImageView)
+    view.addSubview(locationLabel)
     return view
   }()
   
@@ -44,6 +46,8 @@ public final class FeedImageCell: UITableViewCell {
     label.font = UIFont.preferredFont(forTextStyle: .subheadline)
     label.setContentHuggingPriority(.init(251.0), for: .horizontal)
     label.setContentHuggingPriority(.init(251.0), for: .vertical)
+    label.setContentCompressionResistancePriority(.init(750), for: .horizontal)
+    label.setContentCompressionResistancePriority(.init(750), for: .vertical)
     return label
   }()
   
@@ -54,6 +58,8 @@ public final class FeedImageCell: UITableViewCell {
     imageView.contentMode = .scaleAspectFit
     imageView.setContentHuggingPriority(.init(251.0), for: .horizontal)
     imageView.setContentHuggingPriority(.init(251.0), for: .vertical)
+    imageView.setContentCompressionResistancePriority(.init(750), for: .horizontal)
+    imageView.setContentCompressionResistancePriority(.init(750), for: .vertical)
     return imageView
   }()
   
@@ -68,6 +74,8 @@ public final class FeedImageCell: UITableViewCell {
     view.clipsToBounds = true
     view.clearsContextBeforeDrawing = true
     view.layer.cornerRadius = 22.0
+    view.addSubview(feedImageView)
+    view.addSubview(feedImageRetryButton)
     return view
   }()
   
@@ -100,7 +108,7 @@ public final class FeedImageCell: UITableViewCell {
   private(set) public lazy var descriptionLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    label.font = UIFont.preferredFont(forTextStyle: .body)
     label.textColor = .secondaryLabel
     label.numberOfLines = 6
     label.textAlignment = .natural
@@ -110,6 +118,10 @@ public final class FeedImageCell: UITableViewCell {
     label.adjustsFontSizeToFitWidth = false
     label.adjustsFontForContentSizeCategory = true
     label.font = UIFont.preferredFont(forTextStyle: .body)
+    label.setContentHuggingPriority(.init(251), for: .horizontal)
+    label.setContentHuggingPriority(.init(251), for: .vertical)
+    label.setContentCompressionResistancePriority(.init(750), for: .horizontal)
+    label.setContentCompressionResistancePriority(.init(750), for: .vertical)
     return label
   }()
   
@@ -124,6 +136,7 @@ public final class FeedImageCell: UITableViewCell {
     stack.isUserInteractionEnabled = true
     stack.clearsContextBeforeDrawing = true
     stack.autoresizesSubviews = true
+    stack.semanticContentAttribute = .unspecified
     stack.addArrangedSubviews([locationContainerStackView, feedImageContainer, descriptionLabel])
     return stack
   }()
@@ -134,14 +147,7 @@ public final class FeedImageCell: UITableViewCell {
   public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-//    contentView.frame = CGRect(x: 0, y: 0, width: 414, height: 580)
     contentView.addSubview(containerVerticalStackView)
-//    contentView.addSubview(locationContainerStackView)
-    feedImageContainer.addSubview(feedImageView)
-    feedImageContainer.addSubview(feedImageRetryButton)
-    contentView.addSubview(locationLabel)
-    contentView.addSubview(pinContainer)
-    pinContainer.addSubview(pinImageView)
     
     setupLayout()
   }
@@ -151,55 +157,31 @@ public final class FeedImageCell: UITableViewCell {
   }
   
   private func setupLayout() {
-    NSLayoutConstraint.activate([
-      containerVerticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      containerVerticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      containerVerticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      containerVerticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-      
-      descriptionLabel.leadingAnchor.constraint(equalTo: containerVerticalStackView.leadingAnchor),
-      descriptionLabel.bottomAnchor.constraint(equalTo: containerVerticalStackView.bottomAnchor),
-      descriptionLabel.trailingAnchor.constraint(equalTo: containerVerticalStackView.trailingAnchor),
-      descriptionLabel.heightAnchor.constraint(equalToConstant: 114),
-      
-      locationContainerStackView.leadingAnchor.constraint(equalTo: containerVerticalStackView.leadingAnchor),
-      locationContainerStackView.topAnchor.constraint(equalTo: containerVerticalStackView.topAnchor),
-      locationContainerStackView.trailingAnchor.constraint(equalTo: containerVerticalStackView.trailingAnchor),
-//      locationContainerStackView.heightAnchor.constraint(equalTo: pinContainer.heightAnchor),
-      
-      pinContainer.leadingAnchor.constraint(equalTo: locationContainerStackView.leadingAnchor),
-      pinContainer.topAnchor.constraint(equalTo: locationContainerStackView.topAnchor),
-      pinContainer.widthAnchor.constraint(equalToConstant: 10),
-      pinContainer.heightAnchor.constraint(equalToConstant: 38),
-      
-      pinImageView.leadingAnchor.constraint(equalTo: pinContainer.leadingAnchor),
-      pinImageView.topAnchor.constraint(equalTo: pinContainer.topAnchor, constant: 3),
-      pinImageView.widthAnchor.constraint(equalToConstant: 10),
-      pinImageView.heightAnchor.constraint(equalToConstant: 14),
-      
-      locationLabel.trailingAnchor.constraint(equalTo: locationContainerStackView.trailingAnchor),
-      locationLabel.leadingAnchor.constraint(equalTo: locationContainerStackView.leadingAnchor, constant: 16),
-      locationLabel.bottomAnchor.constraint(equalTo: pinContainer.bottomAnchor),
-      locationLabel.topAnchor.constraint(equalTo: pinContainer.topAnchor),
-      
-//      feedImageContainer.topAnchor.constraint(equalTo: locationContainerStackView.bottomAnchor, constant: 10),
-//      feedImageContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//      feedImageContainer.centerYAnchor.constraint(equalTo: containerVerticalStackView.centerYAnchor),
-//      feedImageContainer.leadingAnchor.constraint(equalTo: containerVerticalStackView.leadingAnchor),
-//      feedImageContainer.trailingAnchor.constraint(equalTo: containerVerticalStackView.trailingAnchor),
-      feedImageContainer.widthAnchor.constraint(equalToConstant: 374),
-      feedImageContainer.heightAnchor.constraint(equalToConstant: 374),
-      
-      feedImageView.widthAnchor.constraint(equalTo: feedImageContainer.widthAnchor),
-      feedImageView.heightAnchor.constraint(equalTo: feedImageContainer.heightAnchor),
-      feedImageView.centerXAnchor.constraint(equalTo: feedImageContainer.centerXAnchor),
-      feedImageView.centerYAnchor.constraint(equalTo: feedImageContainer.centerYAnchor),
-      
-      feedImageRetryButton.widthAnchor.constraint(equalTo: feedImageContainer.widthAnchor),
-      feedImageRetryButton.heightAnchor.constraint(equalTo: feedImageContainer.heightAnchor),
-      feedImageRetryButton.centerXAnchor.constraint(equalTo: feedImageContainer.centerXAnchor),
-      feedImageRetryButton.centerYAnchor.constraint(equalTo: feedImageContainer.centerYAnchor),
-    ])
+    NSLayoutConstraint(item: contentView, attribute: .trailingMargin, relatedBy: .equal, toItem: containerVerticalStackView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    // priority 999
+    NSLayoutConstraint(item: contentView, attribute: .bottomMargin, relatedBy: .equal, toItem: containerVerticalStackView, attribute: .bottom, multiplier: 1, constant: 6).isActive = true
+    NSLayoutConstraint(item: containerVerticalStackView, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leadingMargin, multiplier: 1, constant: 0).isActive = true
+    // priority 999
+    NSLayoutConstraint(item: containerVerticalStackView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .topMargin, multiplier: 1, constant: 6).isActive = true
+    NSLayoutConstraint(item: locationContainerStackView, attribute: .width, relatedBy: .equal, toItem: containerVerticalStackView, attribute: .width, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageContainer, attribute: .width, relatedBy: .equal, toItem: containerVerticalStackView, attribute: .width, multiplier: 1, constant: 0).isActive = true
+    
+    NSLayoutConstraint(item: feedImageContainer, attribute: .width, relatedBy: .equal, toItem: feedImageContainer, attribute: .height, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageContainer, attribute: .trailing, relatedBy: .equal, toItem: feedImageRetryButton, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageRetryButton, attribute: .top, relatedBy: .equal, toItem: feedImageContainer, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageContainer, attribute: .bottom, relatedBy: .equal, toItem: feedImageRetryButton, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageRetryButton, attribute: .leading, relatedBy: .equal, toItem: feedImageContainer, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageView, attribute: .top, relatedBy: .equal, toItem: feedImageContainer, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageView, attribute: .leading, relatedBy: .equal, toItem: feedImageContainer, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageContainer, attribute: .trailing, relatedBy: .equal, toItem: feedImageView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: feedImageContainer, attribute: .bottom, relatedBy: .equal, toItem: feedImageView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    
+    NSLayoutConstraint(item: pinContainer, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10).isActive = true
+    NSLayoutConstraint(item: pinImageView, attribute: .leading, relatedBy: .equal, toItem: pinContainer, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pinImageView, attribute: .top, relatedBy: .equal, toItem: pinContainer, attribute: .top, multiplier: 1, constant: 3).isActive = true
+    
+    NSLayoutConstraint(item: pinImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 14).isActive = true
+    
   }
   
   @objc private func retryButtonTapped() {
