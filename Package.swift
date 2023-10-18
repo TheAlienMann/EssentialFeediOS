@@ -14,7 +14,8 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(name: "EssentialFeed", path: "/Users/mohamadrahmani/Developer/_MyProjects/EssentialFeedDemo/EssentialFeed"),
+    .package(url: "https://github.com/TheAlienMann/EssentialFeed", branch: "main")
+//    .package(name: "EssentialFeed", path: "/Users/mohamadrahmani/Developer/_MyProjects/EssentialFeedDemo/EssentialFeed"),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
